@@ -85,3 +85,5 @@ ggplot() +
   ggtitle(label = "Seattle", subtitle = "Demographic Clusters") 
 
 ```
+
+![](figures/seattle.png)
