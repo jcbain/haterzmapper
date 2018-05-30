@@ -37,3 +37,46 @@ ggplot() +
 ```
 
 ![](figures/sanfran.png)
+
+```splus
+library(haterzmapper)
+library(ggplot2)
+library(sf)
+library(tidycensus)
+
+# collect all census tracts from tidycensus
+geographies <- reduce(
+  map(us, function(x) {
+    get_acs(geography = "tract", variables = 'B00001_001',
+            state = x, geometry = TRUE, year = 2015)
+  }),
+  rbind
+)
+
+
+# water shapefile and subset it 
+water <- st_read("~/Desktop/seattle_water.shp")
+water <- subset_map(df = water, long = (topcities %>% filter(city == "Seattle"))$lon, lat = (topcities %>% filter(city == "Seattle"))$lat, 
+                    dist = 50000)
+
+# collect tracts from a 10km perimeter around the 40km radius
+outer <- subset_map(df = geographies, long = (topcities %>% filter(city == "Seattle"))$lon, 
+                    lat = (topcities %>% filter(city == "Seattle"))$lat, 
+                    dist = 50000) 
+
+# city data
+city <- subset_map(df = joined, long = (topcities %>% filter(city == "Seattle"))$lon, 
+                   lat = (topcities %>% filter(city == "Seattle"))$lat)
+
+
+ggplot() +
+  geom_sf(data = outer, color = '#e2e2de', fill = '#e2e2de', alpha = 0) + 
+  geom_sf(data = city, aes(fill = factor(lab)) ,colour = '#ffffff', size = 0.01) +
+  geom_sf(data = water, color = "#4f5a6b", fill = "#d2ddef", size = 0.15) +
+  geom_sf(data = water, color = "#d2ddef", fill = "#d2ddef", size = 0.001) +
+  map_theme_stark() +
+  scale_color_manual(values = colors) +
+  scale_fill_manual(values = colors) +
+  ggtitle(label = "Seattle", subtitle = "Demographic Clusters") 
+
+```
