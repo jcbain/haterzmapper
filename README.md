@@ -36,4 +36,4 @@ ggplot() +
   map_theme_stark()
 ```
 
-![](../figures/sanfran.png)
+![](figures/sanfran.png)
