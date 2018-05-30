@@ -44,6 +44,9 @@ library(ggplot2)
 library(sf)
 library(tidycensus)
 
+colors <- c('#CF3A24', '#8F1D21', '#f08f90', '#FCC9B9', '#763568', '#A87CA0', '#48929B', '#264348', '#7A942E', '#87D37C',
+            '#D9B611', '#F5D76E', '#6C7A89')
+
 # collect all census tracts from tidycensus
 geographies <- reduce(
   map(us, function(x) {
@@ -64,10 +67,12 @@ outer <- subset_map(df = geographies, long = (topcities %>% filter(city == "Seat
                     lat = (topcities %>% filter(city == "Seattle"))$lat, 
                     dist = 50000) 
 
-# city data
-city <- subset_map(df = joined, long = (topcities %>% filter(city == "Seattle"))$lon, 
+# city data sample
+city <- subset_map(df = geographies, long = (topcities %>% filter(city == "Seattle"))$lon, 
                    lat = (topcities %>% filter(city == "Seattle"))$lat)
 
+# randomly create lab column
+city$lab <- sample(1:13, nrow(city), replace = T)
 
 ggplot() +
   geom_sf(data = outer, color = '#e2e2de', fill = '#e2e2de', alpha = 0) + 
