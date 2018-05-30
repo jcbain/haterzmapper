@@ -35,4 +35,5 @@ ggplot() +
   geom_sf(data = sf, colour = '#828282', fill = '#00bf98', size = 0.001) +
   map_theme_stark()
 ```
+
 ![](../figures/sanfran.png)
