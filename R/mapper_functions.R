@@ -66,26 +66,15 @@ subset_map <- function(df, long, lat, dist = 40000){
 #' @param year The year of the collection.
 #' @param dataset The options for census bureau collection. Defaults to 'acs5'
 #'     but options include 'sf1', 'sf3', 'acs1', 'acs3' or 'acs5'
-#' @param include.error Option to include the margin of error rows. Defaults to FALSE.
-#' @param include.total Option to include the total count row. Defaults to FALSE.
 #' @return A tibble of your specific variable rows.
 #' @examples
 #' get_variables('B02001')
 #' @export
 #' @seealso \code{\link{tidycensus::load_variables}}
-get_variables <- function(var, year = 2015, dataset = 'acs5', include.error = FALSE, include.total = FALSE){
+get_variables <- function(var, year = 2015, dataset = 'acs5'){
   # Subset data according to var id
   all_vars = tidycensus::load_variables(year = year, dataset = dataset)
   frame = dplyr::filter(all_vars, stringr::str_detect(name, var))
 
-  # Option to remove margin of error estimates
-  if(!include.error){
-    frame = dplyr::filter(frame, stringr::str_detect(name, 'E'))
-  }
-
-  # Option to remove total count rows
-  if(!include.total){
-    frame = dplyr::filter(frame, !stringr::str_detect(name, '001E|001M'))
-  }
-  frame
+  dplyr::select(frame, name)
 }

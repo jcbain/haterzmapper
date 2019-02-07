@@ -4,8 +4,7 @@
 \alias{get_variables}
 \title{Collect a frame of a specific variable from the ACS or Census}
 \usage{
-get_variables(var, year = 2015, dataset = "acs5", include.error = FALSE,
-  include.total = FALSE)
+get_variables(var, year = 2015, dataset = "acs5")
 }
 \arguments{
 \item{var}{The variable for collection.}
@@ -14,10 +13,6 @@ get_variables(var, year = 2015, dataset = "acs5", include.error = FALSE,
 
 \item{dataset}{The options for census bureau collection. Defaults to 'acs5'
 but options include 'sf1', 'sf3', 'acs1', 'acs3' or 'acs5'}
-
-\item{include.error}{Option to include the margin of error rows. Defaults to FALSE.}
-
-\item{include.total}{Option to include the total count row. Defaults to FALSE.}
 }
 \value{
 A tibble of your specific variable rows.
